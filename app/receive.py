@@ -14,6 +14,7 @@ def parse_xml(web_data):
 
 class Msg(object):
     def __init__(self, xmlData):
+        self.Content = None
         self.ToUserName = xmlData.find('ToUserName').text
         self.FromUserName = xmlData.find('FromUserName').text
         self.CreateTime = xmlData.find('CreateTime').text
