@@ -22,9 +22,10 @@ class Handle(object):
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
-                if(recMsg.Conten == 'Leo'):
-                    content = u"Leo 超帅".encode('GBK')
-                content = "Who are you"
+                if(recMsg.Content == 'Leo'):
+                    content = u"Leo 超帅".encode('utf-8')
+                else :
+                    content = "Who are you"
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
             else:
