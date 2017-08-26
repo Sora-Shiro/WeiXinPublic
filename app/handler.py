@@ -18,7 +18,11 @@ c_name = "c"
 d_name = "d"
 e_name = "e"
 
+vote_name_nick_list = ["1", "2", "3", "4", "5"]
+
 vote_name_list = [a_name, b_name, c_name, d_name, e_name]
+
+nick_name_map = dict(zip(vote_name_nick_list, vote_name_list))
 
 vote_map = {
     a_name: 0,
@@ -42,44 +46,14 @@ class Handle(object):
                 fromUser = recMsg.ToUserName
                 if (recMsg.Content == 'Leo'):
                     content = u"Leo 超帅".encode('utf-8')
-                elif (recMsg.Content == '1'):
-                    vote_map[a_name] += 1
+                elif recMsg.Content in vote_name_nick_list:
+                    nick_name = recMsg.Content
+                    real_name = nick_name_map[nick_name]
+                    vote_map[real_name] += 1
                     show_str = ""
-                    for name in vote_name_list:
-                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
-                        if vote_name_list[-1] != name:
-                            show_str += "\n"
-                    content = show_str.encode('utf-8')
-                elif (recMsg.Content == '2'):
-                    vote_map[b_name] += 1
-                    show_str = ""
-                    for name in vote_name_list:
-                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
-                        if vote_name_list[-1] != name:
-                            show_str += "\n"
-                    content = show_str.encode('utf-8')
-                elif (recMsg.Content == '3'):
-                    vote_map[b_name] += 1
-                    show_str = ""
-                    for name in vote_name_list:
-                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
-                        if vote_name_list[-1] != name:
-                            show_str += "\n"
-                    content = show_str.encode('utf-8')
-                elif (recMsg.Content == '4'):
-                    vote_map[b_name] += 1
-                    show_str = ""
-                    for name in vote_name_list:
-                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
-                        if vote_name_list[-1] != name:
-                            show_str += "\n"
-                    content = show_str.encode('utf-8')
-                elif (recMsg.Content == '5'):
-                    vote_map[b_name] += 1
-                    show_str = ""
-                    for name in vote_name_list:
-                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
-                        if vote_name_list[-1] != name:
+                    for real_name in vote_name_list:
+                        show_str += u"%s的当前得票数%d" % (real_name, vote_map[real_name])
+                        if vote_name_list[-1] != real_name:
                             show_str += "\n"
                     content = show_str.encode('utf-8')
                 else:
