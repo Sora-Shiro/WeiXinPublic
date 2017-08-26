@@ -16,50 +16,19 @@ from secret import nj_token
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 
-a_name = "a"
-b_name = "b"
-c_name = "c"
-d_name = "d"
-e_name = "e"
-
 nick_names = ["1", "2", "3", "4", "5"]
 
-real_names = [a_name, b_name, c_name, d_name, e_name]
+real_names = ["a", "b", "c", "d", "e"]
 
 nick_to_real_map = dict(zip(nick_names, real_names))
 
-real_to_vote_map = {
-    a_name: 0,
-    b_name: 0,
-    c_name: 0,
-    d_name: 0,
-    e_name: 0
-}
+real_to_vote_map = dict(zip(real_names, [0] * len(real_names)))
 
 fans_number_set = set()
-admin_number_set = set(["tomatoes11", "farseerleo",
-                        "o_hn0s0hhaGPwHfZ9mWo8RtnWA2A",
-                        "o_hn0szZLZ3nhY7m-9b9mSaqWRE0"])
-
-
-def init_all_data():
-    global nick_names, real_names, nick_to_real_map, real_to_vote_map, fans_number_set
-
-    nick_names = ["1", "2", "3", "4", "5"]
-
-    real_names = [a_name, b_name, c_name, d_name, e_name]
-
-    nick_to_real_map = dict(zip(nick_names, real_names))
-
-    real_to_vote_map = {
-        a_name: 0,
-        b_name: 0,
-        c_name: 0,
-        d_name: 0,
-        e_name: 0
-    }
-
-    fans_number_set = set()
+admins = ["tomatoes11", "farseerleo",
+          "o_hn0s0hhaGPwHfZ9mWo8RtnWA2A",
+          "o_hn0szZLZ3nhY7m-9b9mSaqWRE0"]
+admin_number_set = set(admins)
 
 
 class Handle(object):
@@ -179,6 +148,30 @@ class Handle(object):
                 return "success"
         except Exception, Argment:
             return Argment
+
+
+def init_all_data(nick=None, real=None, ntr_map=None, rtv_map=None):
+
+    if nick is None:
+        nick = ["1", "2", "3", "4", "5"]
+    if real is None:
+        real = ["a", "b", "c", "d", "e"]
+    if ntr_map is None:
+        ntr_map = dict(zip(nick_names, real_names))
+    if rtv_map is None:
+        rtv_map = dict(zip(real_names, [0] * len(real_names)))
+
+    global nick_names, real_names, nick_to_real_map, real_to_vote_map, fans_number_set
+
+    nick_names = nick
+
+    real_names = real
+
+    nick_to_real_map = ntr_map
+
+    real_to_vote_map = rtv_map
+
+    fans_number_set = set()
 
 
 def save_votes():
