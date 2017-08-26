@@ -12,11 +12,27 @@ import sys
 sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
 from secret import nj_token
 
-a = 0
-b = 0
-c = 0
-d = 0
-e = 0
+a_vote = 0
+b_vote = 0
+c_vote = 0
+d_vote = 0
+e_vote = 0
+
+a_name = "a"
+b_name = "b"
+c_name = "c"
+d_name = "d"
+e_name = "e"
+
+vote_name_list = [a_name, b_name, c_name, d_name, e_name]
+
+vote_map = {
+    a_name: a_vote,
+    b_name: b_vote,
+    c_name: c_vote,
+    d_name: d_vote,
+    e_name: e_vote
+}
 
 
 class Handle(object):
@@ -33,13 +49,20 @@ class Handle(object):
                     content = u"Leo 超帅".encode('utf-8')
                 elif (recMsg.Content == '1'):
                     a += 1
-                    show_str = "a的当前得票数:%d" % a + "\nb的当前得票数:%d" % b +\
-                               "\nc的当前得票数:%d" % c + "\nd的当前得票数:%d" % d + "\ne的当前得票数:%d" % e
-                    show_str = show_str.decode('UTF-8').encode('GBK')
-                    content = show_str
+                    show_str = ""
+                    for name in vote_name_list :
+                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
+                        if vote_name_list[-1] != name:
+                            show_str += "\n"
+                    content = show_str.encode('utf-8')
                 elif (recMsg.Content == '2'):
                     b += 1
-                    content = (str(u"a当前得票数:" + a)).encode('utf-8')
+                    show_str = ""
+                    for name in vote_name_list:
+                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
+                        if vote_name_list[-1] != name:
+                            show_str += "\n"
+                    content = show_str.encode('utf-8')
                 elif (recMsg.Content == '3'):
                     c += 1
                     content = (u"a当前得票数:" + str(a).encode('utf-8')).encode('utf-8')
@@ -52,7 +75,7 @@ class Handle(object):
                     e += 1
                     content = (u"a当前得票数:" + str(a)).encode('utf-8')
                 else:
-                    show_str = u"%s" % ("a当前得票数:" + str(a))
+                    show_str = u"%s" % (u"a当前得票数:" + str(a))
                     content = show_str.encode('utf-8')
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
