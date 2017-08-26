@@ -18,13 +18,13 @@ c_name = "c"
 d_name = "d"
 e_name = "e"
 
-vote_name_nick_list = ["1", "2", "3", "4", "5"]
+nick_names = ["1", "2", "3", "4", "5"]
 
-vote_name_list = [a_name, b_name, c_name, d_name, e_name]
+vote_names = [a_name, b_name, c_name, d_name, e_name]
 
-nick_name_map = dict(zip(vote_name_nick_list, vote_name_list))
+nick_to_real_map = dict(zip(nick_names, vote_names))
 
-vote_map = {
+vote_by_name = {
     a_name: 0,
     b_name: 0,
     c_name: 0,
@@ -36,7 +36,7 @@ vote_map = {
 class Handle(object):
     def POST(self):
         global a_name, b_name, c_name, d_name, e_name
-        global vote_name_list, vote_map
+        global vote_names, vote_by_name
         try:
             webData = web.data()
             print "Handle Post webdata is ", webData  # 后台打日志
@@ -46,21 +46,22 @@ class Handle(object):
                 fromUser = recMsg.ToUserName
                 if (recMsg.Content == 'Leo'):
                     content = u"Leo 超帅".encode('utf-8')
-                elif recMsg.Content in vote_name_nick_list:
+                elif recMsg.Content in nick_names:
                     nick_name = recMsg.Content
-                    real_name = nick_name_map[nick_name]
-                    vote_map[real_name] += 1
+                    real_name = nick_to_real_map[nick_name]
+                    vote_by_name[real_name] += 1
                     show_str = ""
-                    for real_name in vote_name_list:
-                        show_str += u"%s的当前得票数%d" % (real_name, vote_map[real_name])
-                        if vote_name_list[-1] != real_name:
+                    for real_name in vote_names:
+                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, vote_by_name[real_name])
+                        if vote_names[-1] != real_name:
                             show_str += "\n"
                     content = show_str.encode('utf-8')
                 else:
                     show_str = ""
-                    for name in vote_name_list:
-                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
-                        if vote_name_list[-1] != name:
+                    for nick_name in nick_names:
+                        real_name = nick_to_real_map[nick_name]
+                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, vote_by_name[real_name])
+                        if vote_names[-1] != real_name:
                             show_str += "\n"
                     content = show_str.encode('utf-8')
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
