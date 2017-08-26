@@ -12,12 +12,6 @@ import sys
 sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
 from secret import nj_token
 
-a_vote = 0
-b_vote = 0
-c_vote = 0
-d_vote = 0
-e_vote = 0
-
 a_name = "a"
 b_name = "b"
 c_name = "c"
@@ -27,17 +21,18 @@ e_name = "e"
 vote_name_list = [a_name, b_name, c_name, d_name, e_name]
 
 vote_map = {
-    a_name: a_vote,
-    b_name: b_vote,
-    c_name: c_vote,
-    d_name: d_vote,
-    e_name: e_vote
+    a_name: 0,
+    b_name: 0,
+    c_name: 0,
+    d_name: 0,
+    e_name: 0
 }
 
 
 class Handle(object):
     def POST(self):
-        global a, b, c, d, e
+        global a_name, b_name, c_name, d_name, e_name
+        global vote_name_list, vote_map
         try:
             webData = web.data()
             print "Handle Post webdata is ", webData  # 后台打日志
@@ -48,15 +43,15 @@ class Handle(object):
                 if (recMsg.Content == 'Leo'):
                     content = u"Leo 超帅".encode('utf-8')
                 elif (recMsg.Content == '1'):
-                    a += 1
+                    vote_map[a_name] += 1
                     show_str = ""
-                    for name in vote_name_list :
+                    for name in vote_name_list:
                         show_str += u"%s的当前得票数%d" % (name, vote_map[name])
                         if vote_name_list[-1] != name:
                             show_str += "\n"
                     content = show_str.encode('utf-8')
                 elif (recMsg.Content == '2'):
-                    b += 1
+                    vote_map[b_name] += 1
                     show_str = ""
                     for name in vote_name_list:
                         show_str += u"%s的当前得票数%d" % (name, vote_map[name])
@@ -64,18 +59,31 @@ class Handle(object):
                             show_str += "\n"
                     content = show_str.encode('utf-8')
                 elif (recMsg.Content == '3'):
-                    c += 1
-                    content = (u"a当前得票数:" + str(a).encode('utf-8')).encode('utf-8')
+                    vote_map[b_name] += 1
+                    show_str = ""
+                    for name in vote_name_list:
+                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
+                        if vote_name_list[-1] != name:
+                            show_str += "\n"
+                    content = show_str.encode('utf-8')
                 elif (recMsg.Content == '4'):
-                    d += 1
-                    show_str = u"a的当前得票数:%d" % a + u"b的当前得票数:%d" % b
-                    show_str = show_str.encode('utf-8')
-                    content = show_str
+                    vote_map[b_name] += 1
+                    show_str = ""
+                    for name in vote_name_list:
+                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
+                        if vote_name_list[-1] != name:
+                            show_str += "\n"
+                    content = show_str.encode('utf-8')
                 elif (recMsg.Content == '5'):
-                    e += 1
-                    content = (u"a当前得票数:" + str(a)).encode('utf-8')
+                    vote_map[b_name] += 1
+                    show_str = ""
+                    for name in vote_name_list:
+                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
+                        if vote_name_list[-1] != name:
+                            show_str += "\n"
+                    content = show_str.encode('utf-8')
                 else:
-                    show_str = u"%s" % (u"a当前得票数:" + str(a))
+                    show_str = "%s" % (u"a当前得票数:" + str(a_name))
                     content = show_str.encode('utf-8')
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
