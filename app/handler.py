@@ -12,16 +12,16 @@ import sys
 sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
 from secret import nj_token
 
+a = 0
+b = 0
+c = 0
+d = 0
+e = 0
+
 
 class Handle(object):
-    global a, b, c, d, e
-    a = 0
-    b = 0
-    c = 0
-    d = 0
-    e = 0
-
     def POST(self):
+        global a, b, c, d, e
         try:
             webData = web.data()
             print "Handle Post webdata is ", webData  # 后台打日志
