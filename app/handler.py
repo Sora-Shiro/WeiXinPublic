@@ -176,7 +176,7 @@ def save_votes_in_txt():
         line_str = ""
         for o in order_nums:
             player = order_to_player_map[o]
-            line_str += o + " " + player.name + " " + player.votes + "\n"
+            line_str += o + " " + player.name + " " + str(player.votes) + "\n"
             f.write(line_str)
     return "save_ok"
 
@@ -188,5 +188,5 @@ def read_votes_in_txt():
             process_str = line.split()
             order_num = process_str[0]
             name = process_str[1]
-            votes = process_str[2]
+            votes = int(process_str[2])
     return "read_ok"
