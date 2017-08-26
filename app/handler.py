@@ -140,6 +140,7 @@ class Handle(object):
                 # 格式化最终字符串
                 content = show_str.encode('utf-8')
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
+                save_votes()
                 return replyMsg.send()
             else:
                 print "暂且不处理"
@@ -171,19 +172,21 @@ def save_votes():
 
 
 def save_votes_in_txt():
-    return ""
+    with codecs.open('/root/PycharmProjects/GitWeiXinPublic/votes.txt', 'w', 'utf-8') as f:
+        line_str = ""
+        for o in order_nums:
+            player = order_to_player_map[o]
+            line_str += o + " " + player.name + " " + player.votes + "\n"
+            f.write(line_str)
+    return "save_ok"
 
 
 def read_votes_in_txt():
-    import codecs
     with codecs.open('/root/PycharmProjects/GitWeiXinPublic/votes.txt', 'r', 'utf-8') as f:
         for line in f.readlines():
-            # 数据格式：[nickname] [realname] [votes]
+            # 数据格式：[order_num] [name] [votes]
             process_str = line.split()
-            nick = process_str[0]
-            real = process_str[1]
+            order_num = process_str[0]
+            name = process_str[1]
             votes = process_str[2]
-            print nick
-            print real
-            print votes
-    return ""
+    return "read_ok"
