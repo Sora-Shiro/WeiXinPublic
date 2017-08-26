@@ -60,7 +60,7 @@ class Handle(object):
                 if toUser in admin_number_set:
                     # 修改选手名字：alter [order_num] [name]
                     if recMsg.Content.startswith("alter"):
-                        show_str = u"alter"
+                        show_str = u"alter\n"
                         process_str = recMsg.Content.split()
                         # 获取要更改的 player ，将其对应的 name 改变
                         order_num = process_str[1]
@@ -70,13 +70,13 @@ class Handle(object):
                         player.name = name
                     # 增加选手：add [order_num] [name]
                     elif recMsg.Content.startswith("add"):
-                        show_str = u"add"
+                        show_str = u"add\n"
                         process_str = recMsg.Content.split()
                         # 获取要添加的 player 和对应的 order_num
                         order_num = process_str[1]
                         name = u"%s" % process_str[2]
                         # 更新 数据
-                        if order_num in order_nums:
+                        if order_num not in order_nums:
                             order_nums.append(order_num)
                             new_player = Player()
                             new_player.name = name
@@ -84,9 +84,11 @@ class Handle(object):
                             players.append(new_player)
                             new_map = {order_num: new_player}
                             order_to_player_map.append(new_map)
+                        else:
+                            show_str = u"该号数已经存在"
                     # 删除选手：del [nickname]
                     elif recMsg.Content.startswith("del"):
-                        show_str = u"del"
+                        show_str = u"del\n"
                         process_str = recMsg.Content.split()
                         # 获取要删除的 nickname
                         order_num = process_str[1]
@@ -97,7 +99,7 @@ class Handle(object):
                             del order_to_player_map[order_num]
                     # 修改票数：votec [nickname] [votes]
                     elif recMsg.Content.startswith("votec"):
-                        show_str = u"votec"
+                        show_str = u"votec\n"
                         process_str = recMsg.Content.split()
                         # 获取要修改票数的 nickname 和对应的 votes
                         order_num = process_str[1]
@@ -153,7 +155,7 @@ def init_all_data(o=None, p=None, ntp_map=None):
     if p is None:
         p = default_players()
     if o is None:
-        o = [number_order for number_order in range(1, len(players) + 1)]
+        o = [str(y) for y in range(1, len(players) + 1)]
     if ntp_map is None:
         ntp_map = dict(zip(order_nums, players))
 
