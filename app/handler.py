@@ -24,7 +24,7 @@ vote_names = [a_name, b_name, c_name, d_name, e_name]
 
 nick_to_real_map = dict(zip(nick_names, vote_names))
 
-vote_by_name = {
+name_vote_map = {
     a_name: 0,
     b_name: 0,
     c_name: 0,
@@ -32,39 +32,55 @@ vote_by_name = {
     e_name: 0
 }
 
+fans_number_set = {}
+admin_number_set = {"tomatoes11", "farseerleo"}
+
+
 
 class Handle(object):
     def POST(self):
         global a_name, b_name, c_name, d_name, e_name
-        global vote_names, vote_by_name
+        global vote_names, name_vote_map, fans_number_set
         try:
             webData = web.data()
             print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
+                show_str = ""
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 if (recMsg.Content == 'Leo'):
-                    content = u"Leo 超帅".encode('utf-8')
+                    show_str = u"Leo 超帅"
                 elif recMsg.Content in nick_names:
-                    nick_name = recMsg.Content
-                    real_name = nick_to_real_map[nick_name]
-                    vote_by_name[real_name] += 1
-                    show_str = ""
+                    # 检测是否为管理员
+                    if toUser in admin_number_set:
+                        nick_name = recMsg.Content
+                        real_name = nick_to_real_map[nick_name]
+                        name_vote_map[real_name] += 1
+                    else:
+                        # 检测该id是否已经投票
+                        if toUser in fans_number_set:
+                            show_str = u"您已经投过票，谢谢参与！"
+                        else:
+                            fans_number_set.add(toUser)
+                            nick_name = recMsg.Content
+                            real_name = nick_to_real_map[nick_name]
+                            name_vote_map[real_name] += 1
+                    # 展示结果
                     for nick_name in nick_names:
                         real_name = nick_to_real_map[nick_name]
-                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, vote_by_name[real_name])
+                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, name_vote_map[real_name])
                         if vote_names[-1] != real_name:
                             show_str += "\n"
-                    content = show_str.encode('utf-8')
                 else:
-                    show_str = ""
+                    # 展示结果
                     for nick_name in nick_names:
                         real_name = nick_to_real_map[nick_name]
-                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, vote_by_name[real_name])
+                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, name_vote_map[real_name])
                         if vote_names[-1] != real_name:
                             show_str += "\n"
-                    content = show_str.encode('utf-8')
+                # 格式化最终字符串
+                content = show_str.encode('utf-8')
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
             else:
