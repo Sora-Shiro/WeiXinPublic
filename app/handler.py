@@ -134,8 +134,10 @@ class Handle(object):
                     for nick_name in nick_names:
                         real_name = nick_to_real_map[nick_name]
                         print real_name
-                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name.encode('utf-8'), real_to_vote_map[real_name])
+                        show_str += u"%s号，%s得票数为：%d" % (nick_name, (real_name + u"").encode('utf-8'), real_to_vote_map[real_name])
                         print "ok?"
+                        print real_name + u""
+                        print "ye"
                         if real_names[-1] != real_name:
                             show_str += "\n"
                 # 格式化最终字符串
