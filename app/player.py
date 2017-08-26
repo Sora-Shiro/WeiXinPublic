@@ -20,7 +20,7 @@ class Player:
 
 
 def default_players():
-    result_list = []
+    listResult = []
 
     a = Player()
     a.boolEnable = True
@@ -29,7 +29,7 @@ def default_players():
     a.strOrg = 'Nari'
     a.strSex = 'Male'
     a.strAge = '30'
-    result_list.append(a)
+    listResult.append(a)
 
     b = Player()
     b.boolEnable = True
@@ -38,7 +38,7 @@ def default_players():
     b.strOrg = 'SoraShiroGame'
     b.strSex = 'Male'
     b.strAge = '20'
-    result_list.append(b)
+    listResult.append(b)
 
     c = Player()
     c.boolEnable = True
@@ -47,7 +47,7 @@ def default_players():
     c.strOrg = 'Huhu'
     c.strSex = 'Male'
     c.strAge = '20'
-    result_list.append(c)
+    listResult.append(c)
 
     d = Player()
     d.boolEnable = True
@@ -56,7 +56,7 @@ def default_players():
     d.strOrg = 'FA'
     d.strSex = 'Male'
     d.strAge = '20'
-    result_list.append(d)
+    listResult.append(d)
 
     e = Player()
     e.boolEnable = True
@@ -65,6 +65,6 @@ def default_players():
     e.strOrg = 'AW'
     e.strSex = 'Female'
     e.strAge = '20'
-    result_list.append(e)
+    listResult.append(e)
 
-    return result_list
+    return listResult

@@ -60,54 +60,59 @@ class Handle(object):
                     # 修改选手名字：alter [strOrderNum] [strName]
                     if recMsg.Content.startswith("alter"):
                         strShow = u"alter\n"
-                        str_process = recMsg.Content.split()
+                        listProcess = recMsg.Content.split()
                         # 获取要更改的 player ，将其对应的 strName 改变
-                        strOrderNum = str_process[1]
-                        strName = str_process[2]
+                        strOrderNum = listProcess[1]
+                        strName = listProcess[2]
                         player = g_dictOrderToPlayer[strOrderNum]
                         # 更新 数据
                         player.strName = strName
+						save_data()
                     # 增加选手：add [strOrderNum] [strName]
                     elif recMsg.Content.startswith("add"):
                         strShow = u"add\n"
-                        str_process = recMsg.Content.split()
+                        listProcess = recMsg.Content.split()
                         # 获取要添加的 player 和对应的 strOrderNum
-                        strOrderNum = str_process[1]
-                        strName = str_process[2]
+                        strOrderNum = listProcess[1]
+                        strName = listProcess[2]
                         # 更新 数据
                         if strOrderNum not in g_listOrderNums:
                             g_listOrderNums.append(strOrderNum)
-                            player_new = Player()
-                            player_new.strName = strName
-                            player_new.intVotes = 0
-                            g_listPlayers.append(player_new)
-                            g_dictOrderToPlayer[strOrderNum] = player_new
+                            newPlayer = Player()
+                            newPlayer.strName = strName
+                            newPlayer.intVotes = 0
+                            g_listPlayers.append(newPlayer)
+                            g_dictOrderToPlayer[strOrderNum] = newPlayer
+						    save_data()
                         else:
                             strShow = u"该号数已经存在"
                     # 删除选手：del [strOrderNum]
                     elif recMsg.Content.startswith("del"):
                         strShow = u"del\n"
-                        str_process = recMsg.Content.split()
+                        listProcess = recMsg.Content.split()
                         # 获取要删除的 nickname
-                        strOrderNum = str_process[1]
+                        strOrderNum = listProcess[1]
                         if strOrderNum in g_listOrderNums:
                             g_listOrderNums.remove(strOrderNum)
                             strName = g_dictOrderToPlayer[strOrderNum]
                             g_listPlayers.remove(strName)
                             del g_dictOrderToPlayer[strOrderNum]
+							save_data()
                     # 修改票数：votec [order_name] [intVotes]
                     elif recMsg.Content.startswith("votec"):
                         strShow = u"votec\n"
-                        str_process = recMsg.Content.split()
+                        listProcess = recMsg.Content.split()
                         # 获取要修改票数的 nickname 和对应的 intVotes
-                        strOrderNum = str_process[1]
-                        intVotes = int(str_process[2])
+                        strOrderNum = listProcess[1]
+                        intVotes = int(listProcess[2])
                         # 更新 数据
                         player = g_dictOrderToPlayer[strOrderNum]
                         player.intVotes = intVotes
+						save_data()
                     # 复位票数和已投票粉丝：
                     elif recMsg.Content.startswith("reset"):
                         init_all_data()
+						save_data()
                     # 投票检验
                     else:
                         strOrderNum = recMsg.Content
@@ -115,6 +120,7 @@ class Handle(object):
                             player = g_dictOrderToPlayer[strOrderNum]
                             player.intVotes += 1
                             strShow = u"已经成功投给%s号选手%s！" % (strOrderNum, player.strName)
+							save_data()
                         else:
                             strShow = u"没有这个号数的选手哦(⊙□⊙)\n"
                 else:
@@ -129,6 +135,7 @@ class Handle(object):
                             player = g_dictOrderToPlayer[strOrderNum]
                             player.intVotes += 1
                             strShow = u"已经成功投给%s号选手%s！" % (strOrderNum, player.strName)
+							save_data()
                         else:
                             strShow = u"没有这个号数的选手哦(⊙□⊙)\n"
                 # 展示结果
@@ -140,7 +147,7 @@ class Handle(object):
                 # 格式化最终字符串
                 strContent = strShow.encode('utf-8')
                 replyMsg = reply.TextMsg(strToUser, strFromUser, strContent)
-                save_data()
+                #save_data()
                 return replyMsg.send()
             else:
                 print "暂且不处理"
@@ -192,10 +199,10 @@ def read_data_in_txt():
             strOrderNum = strProcess[0]
             strName = strProcess[1]
             intVotes = int(strProcess[2])
-            player_new = Player()
-            player_new.strName = strName
-            player_new.intVotes = intVotes
-            g_listPlayers.append(player_new)
+            newPlayer = Player()
+            newPlayer.strName = strName
+            newPlayer.intVotes = intVotes
+            g_listPlayers.append(newPlayer)
             g_listOrderNums.append(strOrderNum)
         g_dictOrderToPlayer = dict(zip(g_listOrderNums, g_listPlayers))
     return "read_ok"
