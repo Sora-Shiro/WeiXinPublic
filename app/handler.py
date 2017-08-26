@@ -33,7 +33,8 @@ class Handle(object):
                     content = u"Leo 超帅".encode('utf-8')
                 elif (recMsg.Content == '1'):
                     a += 1
-                    show_str = "a的当前得票数:%d" % a + "\nb的当前得票数:%d" % b + "\nc的当前得票数:%d" % c + "\nd的当前得票数:%d" % d + "\ne的当前得票数:%d" % e
+                    show_str = "a的当前得票数:%d" % a + "\nb的当前得票数:%d" % b +\
+                               "\nc的当前得票数:%d" % c + "\nd的当前得票数:%d" % d + "\ne的当前得票数:%d" % e
                     show_str = show_str.decode('UTF-8').encode('GBK')
                     content = show_str
                 elif (recMsg.Content == '2'):
@@ -44,14 +45,14 @@ class Handle(object):
                     content = (u"a当前得票数:" + str(a).encode('utf-8')).encode('utf-8')
                 elif (recMsg.Content == '4'):
                     d += 1
-                    show_str = "a的当前得票数:%d" % a + "\nb的当前得票数:%d" % b + "\nc的当前得票数:%d" % c + "\nd的当前得票数:%d" % d + "\ne的当前得票数:%d" % e
+                    show_str = u"a的当前得票数:%d" % a + u"b的当前得票数:%d" % b
                     show_str = show_str.encode('utf-8')
                     content = show_str
                 elif (recMsg.Content == '5'):
                     e += 1
                     content = (u"a当前得票数:" + str(a)).encode('utf-8')
                 else:
-                    show_str = u'%s' % ("a当前得票数:" + str(a))
+                    show_str = u"%s" % ("a当前得票数:" + str(a))
                     content = show_str.encode('utf-8')
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
