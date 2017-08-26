@@ -67,8 +67,8 @@ class Handle(object):
                     process_str = recMsg.Content.split()
                     # 获取要更改的 nickname ，将其对应的 realname 改变
                     nick = process_str[1]
-                    
-                    real = u"%s" % (process_str[2].encode('gbk'))
+
+                    real = "%s" % (process_str[2].encode('gbk'))
                     print real
                     real = u"%s" % (process_str[2].encode('utf-8'))
                     print real
