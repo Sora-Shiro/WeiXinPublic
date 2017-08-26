@@ -133,7 +133,7 @@ class Handle(object):
                 for order_num in order_nums:
                     player = order_to_player_map[order_num]
                     show_str += u"%s号，%s得票数为：%d" % (order_num, player.name, player.votes)
-                    if order_nums[-1] != order_nums:
+                    if order_nums[-1] != order_num:
                         show_str += "\n"
                 # 格式化最终字符串
                 content = show_str.encode('utf-8')
