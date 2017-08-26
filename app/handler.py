@@ -67,8 +67,8 @@ class Handle(object):
                     process_str = recMsg.Content.split()
                     # 获取要更改的 nickname ，将其对应的 realname 改变
                     nick = process_str[1]
-                    print process_str[2]
                     real = u"%s" % process_str[2]
+                    print real
                     real_before = nick_to_real_map[nick]
                     # 更新 数据
                     real_name_list_index = real_names.index(real_before)
