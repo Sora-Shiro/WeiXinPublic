@@ -83,7 +83,11 @@ class Handle(object):
                             show_str += "\n"
                     content = show_str.encode('utf-8')
                 else:
-                    show_str = "%s" % (u"a当前得票数:" + str(a_name))
+                    show_str = ""
+                    for name in vote_name_list:
+                        show_str += u"%s的当前得票数%d" % (name, vote_map[name])
+                        if vote_name_list[-1] != name:
+                            show_str += "\n"
                     content = show_str.encode('utf-8')
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
