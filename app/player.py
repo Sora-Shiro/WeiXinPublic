@@ -5,17 +5,17 @@
 class Player:
     def __init__(self):
         # 使能 #不知道有啥用 但感觉有用
-        self.enable = True
+        self.boolEnable = True
         # 得票数
-        self.votes = 0
+        self.intVotes = 0
         # 名字
-        self.name = ''
+        self.strName = ''
         # 机构 organization
-        self.org = ''
+        self.strOrg = ''
         # 性别
-        self.sex = ''
+        self.strSex = ''
         # 年龄
-        self.age = ''
+        self.strAge = ''
         # 以下可以继续增加属性
 
 
@@ -23,48 +23,48 @@ def default_players():
     result_list = []
 
     a = Player()
-    a.enable = True
-    a.votes = 0
-    a.name = 'Leo'
-    a.org = 'Nari'
-    a.sex = 'Male'
-    a.age = '30'
+    a.boolEnable = True
+    a.intVotes = 0
+    a.strName = 'Leo'
+    a.strOrg = 'Nari'
+    a.strSex = 'Male'
+    a.strAge = '30'
     result_list.append(a)
 
     b = Player()
-    b.enable = True
-    b.votes = 0
-    b.name = 'Sora'
-    b.org = 'SoraShiroGame'
-    b.sex = 'Male'
-    b.age = '20'
+    b.boolEnable = True
+    b.intVotes = 0
+    b.strName = 'Sora'
+    b.strOrg = 'SoraShiroGame'
+    b.strSex = 'Male'
+    b.strAge = '20'
     result_list.append(b)
 
     c = Player()
-    c.enable = True
-    c.votes = 0
-    c.name = u'糊糊'
-    c.org = 'Huhu'
-    c.sex = 'Male'
-    c.age = '20'
+    c.boolEnable = True
+    c.intVotes = 0
+    c.strName = u'糊糊'
+    c.strOrg = 'Huhu'
+    c.strSex = 'Male'
+    c.strAge = '20'
     result_list.append(c)
 
     d = Player()
-    d.enable = True
-    d.votes = 0
-    d.name = 'ForgetAll'
-    d.org = 'FA'
-    d.sex = 'Male'
-    d.age = '20'
+    d.boolEnable = True
+    d.intVotes = 0
+    d.strName = 'ForgetAll'
+    d.strOrg = 'FA'
+    d.strSex = 'Male'
+    d.strAge = '20'
     result_list.append(d)
 
     e = Player()
-    e.enable = True
-    e.votes = 0
-    e.name = 'Alice White'
-    e.org = 'AW'
-    e.sex = 'Female'
-    e.age = '20'
+    e.boolEnable = True
+    e.intVotes = 0
+    e.strName = 'Alice White'
+    e.strOrg = 'AW'
+    e.strSex = 'Female'
+    e.strAge = '20'
     result_list.append(e)
 
     return result_list
