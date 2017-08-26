@@ -74,16 +74,24 @@ class Handle(object):
                         process_str = recMsg.Content.split()
                         # 获取要添加的 player 和对应的 order_num
                         order_num = process_str[1]
-                        name = u"%s" % process_str[2]
+                        name = process_str[2]
                         # 更新 数据
                         if order_num not in order_nums:
+                            print "1"
                             order_nums.append(order_num)
+                            print "2"
                             new_player = Player()
+                            print "3"
                             new_player.name = name
+                            print "4"
                             new_player.votes = 0
+                            print "5"
                             players.append(new_player)
+                            print "6"
                             new_map = {order_num: new_player}
+                            print "7"
                             order_to_player_map.append(new_map)
+                            print "8"
                         else:
                             show_str = u"该号数已经存在"
                     # 删除选手：del [nickname]
