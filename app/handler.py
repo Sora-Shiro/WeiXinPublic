@@ -9,31 +9,31 @@ import reply
 import receive
 
 import sys
-
 sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
 from secret import nj_token
+from app.player import default_players, Player
 
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 
-nick_names = ["1", "2", "3", "4", "5"]
+players = default_players()
 
-real_names = ["a", "b", "c", "d", "e"]
+order_nums = [x for x in range(1, len(players) + 1)]
 
-nick_to_real_map = dict(zip(nick_names, real_names))
-
-real_to_vote_map = dict(zip(real_names, [0] * len(real_names)))
+order_to_player_map = dict(zip(order_nums, players))
 
 fans_number_set = set()
+
 admins = ["tomatoes11", "farseerleo",
           "o_hn0s0hhaGPwHfZ9mWo8RtnWA2A",
           "o_hn0szZLZ3nhY7m-9b9mSaqWRE0"]
 admin_number_set = set(admins)
 
 
+
 class Handle(object):
     def POST(self):
-        global real_names, real_to_vote_map, fans_number_set, nick_to_real_map, admin_number_set
+        global players, fans_number_set, order_to_player_map, admin_number_set
         try:
             read_votes_in_txt()
             webData = web.data()
@@ -58,66 +58,62 @@ class Handle(object):
                 '''
                 # 检测是否为管理员
                 if toUser in admin_number_set:
-                    # 修改选手名字：alter [nickname] [realname]
+                    # 修改选手名字：alter [order_num] [name]
                     if recMsg.Content.startswith("alter"):
                         show_str = u"alter"
                         process_str = recMsg.Content.split()
-                        # 获取要更改的 nickname ，将其对应的 realname 改变
-                        nick = process_str[1]
-                        real = process_str[2]
-                        real_before = nick_to_real_map[nick]
+                        # 获取要更改的 player ，将其对应的 name 改变
+                        order_num = process_str[1]
+                        name = process_str[2]
+                        player = order_to_player_map[order_num]
                         # 更新 数据
-                        real_name_list_index = real_names.index(real_before)
-                        real_names[real_name_list_index] = real
-                        nick_to_real_map = dict(zip(nick_names, real_names))
-                        vote = real_to_vote_map[real_before]
-                        del real_to_vote_map[real_before]
-                        real_to_vote_map[real] = vote
-                    # 增加选手：add [nickname] [realname]
+                        player.name = name
+                    # 增加选手：add [order_num] [name]
                     elif recMsg.Content.startswith("add"):
                         show_str = u"add"
                         process_str = recMsg.Content.split()
-                        # 获取要添加的 nickname 和对应的 realname
-                        nick = process_str[1]
-                        real = u"%s" % process_str[2]
+                        # 获取要添加的 player 和对应的 order_num
+                        order_num = process_str[1]
+                        name = u"%s" % process_str[2]
                         # 更新 数据
-                        nick_names.append(nick)
-                        real_names.append(real)
-                        nick_to_real_map = dict(zip(nick_names, real_names))
-                        vote = 0
-                        real_to_vote_map[real] = vote
+                        if order_num in order_nums:
+                            order_nums.append(order_num)
+                            new_player = Player()
+                            new_player.name = name
+                            new_player.votes = 0
+                            players.append(new_player)
+                            new_map = {order_num: new_player}
+                            order_to_player_map.append(new_map)
                     # 删除选手：del [nickname]
                     elif recMsg.Content.startswith("del"):
                         show_str = u"del"
                         process_str = recMsg.Content.split()
                         # 获取要删除的 nickname
-                        nick = process_str[1]
-                        if nick in process_str:
-                            real = nick_to_real_map[nick]
-                            nick_names.remove(nick)
-                            real_names.remove(real)
-                            del nick_to_real_map[nick]
-                            del real_to_vote_map[real]
+                        order_num = process_str[1]
+                        if order_num in order_nums:
+                            order_nums.remove(order_num)
+                            name = order_to_player_map[order_num]
+                            players.remove(name)
+                            del order_to_player_map[order_num]
                     # 修改票数：votec [nickname] [votes]
                     elif recMsg.Content.startswith("votec"):
                         show_str = u"votec"
                         process_str = recMsg.Content.split()
                         # 获取要修改票数的 nickname 和对应的 votes
-                        nick = process_str[1]
-                        votes = process_str[2]
-                        votes = int(votes)
+                        order_num = process_str[1]
+                        votes = int(process_str[2])
                         # 更新 数据
-                        real = nick_to_real_map[nick]
-                        real_to_vote_map[real] = votes
+                        player = order_to_player_map[order_num]
+                        player.votes = votes
                     # 复位票数和已投票粉丝：
                     elif recMsg.Content.startswith("reset"):
                         init_all_data()
                     # 投票检验
                     else:
-                        nick_name = recMsg.Content
-                        if nick_name in nick_names:
-                            real_name = nick_to_real_map[nick_name]
-                            real_to_vote_map[real_name] += 1
+                        order_num = recMsg.Content
+                        if order_num in order_nums:
+                            player = order_to_player_map[order_num]
+                            player.votes += 1
                         else:
                             show_str = u"没有这个号数的选手哦(⊙□⊙)"
                 else:
@@ -127,17 +123,17 @@ class Handle(object):
                     # 投票检验
                     else:
                         fans_number_set.add(toUser)
-                        nick_name = recMsg.Content
-                        if nick_name in nick_names:
-                            real_name = nick_to_real_map[nick_name]
-                            real_to_vote_map[real_name] += 1
+                        order_num = recMsg.Content
+                        if order_num in order_nums:
+                            player = order_to_player_map[order_num]
+                            player.votes += 1
                         else:
                             show_str = u"没有这个号数的选手哦(⊙□⊙)"
                 # 展示结果
-                for nick_name in nick_names:
-                    real_name = nick_to_real_map[nick_name]
-                    show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, real_to_vote_map[real_name])
-                    if real_names[-1] != real_name:
+                for order_num in order_nums:
+                    player = order_to_player_map[order_num]
+                    show_str += u"%s号，%s得票数为：%d" % (order_num, player.name, player.votes)
+                    if order_nums[-1] != order_nums:
                         show_str += "\n"
                 # 格式化最终字符串
                 content = show_str.encode('utf-8')
@@ -150,27 +146,20 @@ class Handle(object):
             return Argment
 
 
-def init_all_data(nick=None, real=None, ntr_map=None, rtv_map=None):
+def init_all_data(o=None, p=None, ntp_map=None):
 
-    if nick is None:
-        nick = ["1", "2", "3", "4", "5"]
-    if real is None:
-        real = ["a", "b", "c", "d", "e"]
-    if ntr_map is None:
-        ntr_map = dict(zip(nick_names, real_names))
-    if rtv_map is None:
-        rtv_map = dict(zip(real_names, [0] * len(real_names)))
+    global order_nums, players, order_to_player_map, fans_number_set
 
-    global nick_names, real_names, nick_to_real_map, real_to_vote_map, fans_number_set
+    if p is None:
+        p = default_players()
+    if o is None:
+        o = [number_order for number_order in range(1, len(players) + 1)]
+    if ntp_map is None:
+        ntp_map = dict(zip(order_nums, players))
 
-    nick_names = nick
-
-    real_names = real
-
-    nick_to_real_map = ntr_map
-
-    real_to_vote_map = rtv_map
-
+    players = p
+    order_nums = o
+    order_to_player_map = ntp_map
     fans_number_set = set()
 
 
