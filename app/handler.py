@@ -50,6 +50,14 @@ class Handle(object):
                 fromUser = recMsg.ToUserName
                 if (recMsg.Content == 'Leo'):
                     show_str = u"Leo 超帅"
+                # revote enable 指令可以让发送者成为管理员
+                if recMsg.Content == "revote enable":
+                    admin_number_set.add(toUser)
+                    show_str = u"Revote Enable"
+                elif recMsg.Content == "rovote disable":
+                    if toUser in admin_number_set:
+                        admin_number_set.remove(toUser)
+                        show_str = u"Rovote Disable"
                 elif recMsg.Content in nick_names:
                     # 检测是否为管理员
                     if toUser in admin_number_set:
@@ -59,7 +67,7 @@ class Handle(object):
                     else:
                         # 检测该id是否已经投票
                         if toUser in fans_number_set:
-                            show_str = u"您已经投过票，谢谢参与！"
+                            show_str = u"您已经投过票，谢谢参与！\n"
                         else:
                             fans_number_set.add(toUser)
                             nick_name = recMsg.Content
