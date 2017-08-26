@@ -110,25 +110,25 @@ class Handle(object):
                         init_all_data()
                     # 投票检验
                     else:
-                        order_num = recMsg.Content
+                        order_num = int(recMsg.Content)
                         if order_num in order_nums:
                             player = order_to_player_map[order_num]
                             player.votes += 1
                         else:
-                            show_str = u"没有这个号数的选手哦(⊙□⊙)"
+                            show_str = u"没有这个号数的选手哦(⊙□⊙)\n"
                 else:
                     # 检测该非管理员人员是否已经投票
                     if toUser in fans_number_set:
                         show_str = u"您已经投过票，谢谢参与！(*´▽｀* )\n"
                     # 投票检验
                     else:
-                        fans_number_set.add(toUser)
-                        order_num = recMsg.Content
+                        order_num = int(recMsg.Content)
                         if order_num in order_nums:
+                            fans_number_set.add(toUser)
                             player = order_to_player_map[order_num]
                             player.votes += 1
                         else:
-                            show_str = u"没有这个号数的选手哦(⊙□⊙)"
+                            show_str = u"没有这个号数的选手哦(⊙□⊙)\n"
                 # 展示结果
                 for order_num in order_nums:
                     player = order_to_player_map[order_num]
