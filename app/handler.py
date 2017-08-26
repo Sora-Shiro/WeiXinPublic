@@ -51,7 +51,7 @@ class Handle(object):
                     real_name = nick_to_real_map[nick_name]
                     vote_by_name[real_name] += 1
                     show_str = ""
-                    for real_name in vote_names:
+                    for nick_name in vote_names:
                         show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, vote_by_name[real_name])
                         if vote_names[-1] != real_name:
                             show_str += "\n"
