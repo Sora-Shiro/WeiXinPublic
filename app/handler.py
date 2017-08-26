@@ -46,7 +46,7 @@ class Handle(object):
             print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
-                show_str = ""
+                show_str = u""
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 if (recMsg.Content == 'Leo'):
@@ -94,6 +94,7 @@ class Handle(object):
                     # 获取要修改票数的 nickname 和对应的 votes
                     nick = process_str[1]
                     votes = process_str[2]
+                    votes = int(votes)
                     # 更新 数据
                     real = nick_to_real_map[nick]
                     real_to_vote_map[real] = votes
