@@ -32,9 +32,8 @@ name_vote_map = {
     e_name: 0
 }
 
-fans_number_set = {}
-admin_number_set = {"tomatoes11", "farseerleo"}
-
+fans_number_set = set()
+admin_number_set = set(["tomatoes11", "farseerleo"])
 
 
 class Handle(object):
