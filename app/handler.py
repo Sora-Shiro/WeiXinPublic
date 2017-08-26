@@ -46,7 +46,7 @@ class Handle(object):
             print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
-                show_str = u""
+                show_str = u"debug"
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 if (recMsg.Content == 'Leo'):
@@ -67,7 +67,8 @@ class Handle(object):
                     process_str = recMsg.Content.split()
                     # 获取要更改的 nickname ，将其对应的 realname 改变
                     nick = process_str[1]
-                    real = process_str[2]
+                    print process_str[2]
+                    real = u"%s" % process_str[2]
                     real_before = nick_to_real_map[nick]
                     # 更新 数据
                     real_name_list_index = real_names.index(real_before)
@@ -81,7 +82,7 @@ class Handle(object):
                     process_str = recMsg.Content.split()
                     # 获取要添加的 nickname 和对应的 realname
                     nick = process_str[1]
-                    real = process_str[2]
+                    real = u"%s" % process_str[2]
                     # 更新 数据
                     nick_names.append(nick)
                     real_names.append(real)
