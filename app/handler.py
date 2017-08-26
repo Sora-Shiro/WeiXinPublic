@@ -67,7 +67,7 @@ class Handle(object):
                         player = g_dictOrderToPlayer[strOrderNum]
                         # 更新 数据
                         player.strName = strName
-					    save_data()
+                        save_data()
                     # 增加选手：add [strOrderNum] [strName]
                     elif recMsg.Content.startswith("add"):
                         strShow = u"add\n"
@@ -83,7 +83,7 @@ class Handle(object):
                             newPlayer.intVotes = 0
                             g_listPlayers.append(newPlayer)
                             g_dictOrderToPlayer[strOrderNum] = newPlayer
-						    save_data()
+                            save_data()
                         else:
                             strShow = u"该号数已经存在"
                     # 删除选手：del [strOrderNum]
@@ -97,7 +97,7 @@ class Handle(object):
                             strName = g_dictOrderToPlayer[strOrderNum]
                             g_listPlayers.remove(strName)
                             del g_dictOrderToPlayer[strOrderNum]
-						    save_data()
+                            save_data()
                     # 修改票数：votec [order_name] [intVotes]
                     elif recMsg.Content.startswith("votec"):
                         strShow = u"votec\n"
@@ -108,11 +108,11 @@ class Handle(object):
                         # 更新 数据
                         player = g_dictOrderToPlayer[strOrderNum]
                         player.intVotes = intVotes
-					    save_data()
+                        save_data()
                     # 复位票数和已投票粉丝：
                     elif recMsg.Content.startswith("reset"):
                         init_all_data()
-					    save_data()
+                        save_data()
                     # 投票检验
                     else:
                         strOrderNum = recMsg.Content
@@ -120,7 +120,7 @@ class Handle(object):
                             player = g_dictOrderToPlayer[strOrderNum]
                             player.intVotes += 1
                             strShow = u"已经成功投给%s号选手%s！" % (strOrderNum, player.strName)
-						    save_data()
+                            save_data()
                         else:
                             strShow = u"没有这个号数的选手哦(⊙□⊙)\n"
                 else:
@@ -135,7 +135,7 @@ class Handle(object):
                             player = g_dictOrderToPlayer[strOrderNum]
                             player.intVotes += 1
                             strShow = u"已经成功投给%s号选手%s！" % (strOrderNum, player.strName)
-						    save_data()
+                            save_data()
                         else:
                             strShow = u"没有这个号数的选手哦(⊙□⊙)\n"
                 # 展示结果
