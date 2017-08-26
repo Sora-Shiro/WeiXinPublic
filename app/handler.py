@@ -78,20 +78,13 @@ class Handle(object):
                     # print real
 
                     real_before = nick_to_real_map[nick]
-                    print "1"
                     # 更新 数据
                     real_name_list_index = real_names.index(real_before)
-                    print "2"
                     real_names[real_name_list_index] = real
-                    print "3"
                     nick_to_real_map = dict(zip(nick_names, real_names))
-                    print "4"
                     vote = real_to_vote_map[real_before]
-                    print "5"
                     del real_to_vote_map[real_before]
-                    print "6"
                     real_to_vote_map[real] = vote
-                    print "7"
                 # 增加选手：add [nickname] [realname]
                 elif recMsg.Content.startswith("add"):
                     process_str = recMsg.Content.split()
@@ -140,7 +133,9 @@ class Handle(object):
                     # 展示结果
                     for nick_name in nick_names:
                         real_name = nick_to_real_map[nick_name]
-                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, real_to_vote_map[real_name])
+                        print real_name
+                        show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name.encode('utf-8'), real_to_vote_map[real_name])
+                        print "ok?"
                         if real_names[-1] != real_name:
                             show_str += "\n"
                 # 格式化最终字符串
