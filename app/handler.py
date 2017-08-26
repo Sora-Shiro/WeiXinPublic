@@ -49,7 +49,7 @@ class Handle(object):
             print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
-                show_str = u"debug"
+                show_str = u""
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 if (recMsg.Content == 'Leo'):
@@ -67,6 +67,7 @@ class Handle(object):
                 '''
                 # 修改选手名字：alter [nickname] [realname]
                 if recMsg.Content.startswith("alter"):
+                    show_str = u"alter"
                     process_str = recMsg.Content.split()
                     # 获取要更改的 nickname ，将其对应的 realname 改变
                     nick = process_str[1]
@@ -81,6 +82,7 @@ class Handle(object):
                     real_to_vote_map[real] = vote
                 # 增加选手：add [nickname] [realname]
                 elif recMsg.Content.startswith("add"):
+                    show_str = u"add"
                     process_str = recMsg.Content.split()
                     # 获取要添加的 nickname 和对应的 realname
                     nick = process_str[1]
@@ -93,6 +95,7 @@ class Handle(object):
                     real_to_vote_map[real] = vote
                 # 修改票数：votec [nickname] [votes]
                 elif recMsg.Content.startswith("votec"):
+                    show_str = u"votec"
                     process_str = recMsg.Content.split()
                     # 获取要修改票数的 nickname 和对应的 votes
                     nick = process_str[1]
@@ -118,7 +121,6 @@ class Handle(object):
                             real_name = nick_to_real_map[nick_name]
                             real_to_vote_map[real_name] += 1
                     # 展示结果
-                    show_str = ""
                     for nick_name in nick_names:
                         real_name = nick_to_real_map[nick_name]
                         show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, real_to_vote_map[real_name])
