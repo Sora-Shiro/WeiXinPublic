@@ -68,7 +68,7 @@ class Handle(object):
                     # 获取要更改的 nickname ，将其对应的 realname 改变
                     nick = process_str[1]
 
-                    real = "%s" % (process_str[2].encode('gbk'))
+                    real = "%s" % (process_str[2])
                     print real
                     real = u"%s" % (process_str[2].encode('utf-8'))
                     print real
