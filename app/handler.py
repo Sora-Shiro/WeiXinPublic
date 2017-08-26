@@ -177,7 +177,7 @@ def save_votes_in_txt():
         for o in order_nums:
             player = order_to_player_map[o]
             line_str += o + ":" + player.name + ":" + str(player.votes) + "\n"
-            f.write(line_str)
+        f.write(line_str)
     return "save_ok"
 
 
