@@ -137,7 +137,8 @@ class Handle(object):
                         print "ahh"
                         print real_to_vote_map[real_name]
                         print "pre"
-                        show_str += nick_name + " : " + real_name + " : " + real_to_vote_map[real_name]
+                        show_str += nick_name + u" : " + real_name + u" : " + real_to_vote_map[real_name]
+                        print show_str
                         if real_names[-1] != real_name:
                             show_str += "\n"
                 # 格式化最终字符串
