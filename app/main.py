@@ -4,10 +4,10 @@ import web
 
 from handler import Handle
 
-urls = (
+g_urls = (
     '/wx', 'Handle',
 )
 
 if __name__ == '__main__':
-    app = web.application(urls, globals())
+    app = web.application(g_urls, globals())
     app.run()
