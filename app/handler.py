@@ -70,21 +70,28 @@ class Handle(object):
 
                     real = "%s" % (process_str[2])
                     print real
-                    real = u"%s" % (process_str[2].encode('utf-8'))
-                    print real
-                    real = u"%s" % (process_str[2].decode('gbk'))
-                    print real
-                    real = u"%s" % (process_str[2].decode('utf-8'))
-                    print real
+                    # real = u"%s" % (process_str[2].encode('utf-8'))
+                    # print real
+                    # real = u"%s" % (process_str[2].decode('gbk'))
+                    # print real
+                    # real = u"%s" % (process_str[2].decode('utf-8'))
+                    # print real
 
                     real_before = nick_to_real_map[nick]
+                    print "1"
                     # 更新 数据
                     real_name_list_index = real_names.index(real_before)
+                    print "2"
                     real_names[real_name_list_index] = real
+                    print "3"
                     nick_to_real_map = dict(zip(nick_names, real_names))
+                    print "4"
                     vote = real_to_vote_map[real_before]
+                    print "5"
                     del real_to_vote_map[real_before]
+                    print "6"
                     real_to_vote_map[real] = vote
+                    print "7"
                 # 增加选手：add [nickname] [realname]
                 elif recMsg.Content.startswith("add"):
                     process_str = recMsg.Content.split()
