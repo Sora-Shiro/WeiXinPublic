@@ -18,7 +18,7 @@ from app.player import default_players, Player
 
 players = default_players()
 
-order_nums = [x for x in range(1, len(players) + 1)]
+order_nums = [str(x) for x in range(1, len(players) + 1)]
 
 order_to_player_map = dict(zip(order_nums, players))
 
@@ -110,7 +110,7 @@ class Handle(object):
                         init_all_data()
                     # 投票检验
                     else:
-                        order_num = int(recMsg.Content)
+                        order_num = recMsg.Content
                         if order_num in order_nums:
                             player = order_to_player_map[order_num]
                             player.votes += 1
@@ -122,7 +122,7 @@ class Handle(object):
                         show_str = u"您已经投过票，谢谢参与！(*´▽｀* )\n"
                     # 投票检验
                     else:
-                        order_num = int(recMsg.Content)
+                        order_num = recMsg.Content
                         if order_num in order_nums:
                             fans_number_set.add(toUser)
                             player = order_to_player_map[order_num]
