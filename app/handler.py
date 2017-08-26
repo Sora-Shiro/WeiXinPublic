@@ -33,27 +33,26 @@ class Handle(object):
                     content = u"Leo 超帅".encode('utf-8')
                 elif (recMsg.Content == '1'):
                     a += 1
-                    content = (str("a当前得票数:" + a + "b当前得票数:" + b + "c当前得票数:" + c + "d当前得票数:" + d + "e当前得票数:" + e)).encode(
-                        'utf-8')
+                    show_str = "a的当前得票数:%d" % a + "\nb的当前得票数:%d" % b + "\nc的当前得票数:%d" % c + "\nd的当前得票数:%d" % d + "\ne的当前得票数:%d" % e
+                    show_str = show_str.decode('UTF-8').encode('GBK')
+                    content = show_str
                 elif (recMsg.Content == '2'):
                     b += 1
-                    content = (str(u"a当前得票数:" + a + u"b当前得票数:" + b + u"c当前得票数:" + c + u"d当前得票数:" + d + u"e当前得票数:" + e)).encode(
-                        'utf-8')
+                    content = (str(u"a当前得票数:" + a)).encode('utf-8')
                 elif (recMsg.Content == '3'):
                     c += 1
-                    content = (str(u"a当前得票数:" + a + u"b当前得票数:" + b + u"c当前得票数:" + c + u"d当前得票数:" + d + u"e当前得票数:" + e)).encode(
-                        'utf-8')
+                    content = (u"a当前得票数:" + str(a).encode('utf-8')).encode('utf-8')
                 elif (recMsg.Content == '4'):
                     d += 1
-                    content = (str(u"a当前得票数:" + a + u"b当前得票数:" + b + u"c当前得票数:" + c + u"d当前得票数:" + d + u"e当前得票数:" + e)).encode(
-                        'utf-8')
+                    show_str = "a的当前得票数:%d" % a + "\nb的当前得票数:%d" % b + "\nc的当前得票数:%d" % c + "\nd的当前得票数:%d" % d + "\ne的当前得票数:%d" % e
+                    show_str = show_str.encode('utf-8')
+                    content = show_str
                 elif (recMsg.Content == '5'):
                     e += 1
-                    content = (str("a当前得票数:" + a + "b当前得票数:" + b + "c当前得票数:" + c + "d当前得票数:" + d + "e当前得票数:" + e)).encode(
-                        'utf-8')
+                    content = (u"a当前得票数:" + str(a)).encode('utf-8')
                 else:
-                    content = (str("a当前得票数:" + a + "b当前得票数:" + b + "c当前得票数:" + c + "d当前得票数:" + d + "e当前得票数:" + e)).encode(
-                        'utf-8')
+                    show_str = u'%s' % ("a当前得票数:" + str(a))
+                    content = show_str.encode('utf-8')
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
             else:
