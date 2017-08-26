@@ -118,6 +118,7 @@ class Handle(object):
                             real_name = nick_to_real_map[nick_name]
                             real_to_vote_map[real_name] += 1
                     # 展示结果
+                    show_str = ""
                     for nick_name in nick_names:
                         real_name = nick_to_real_map[nick_name]
                         show_str += u"%s号，%s得票数为：%d" % (nick_name, real_name, real_to_vote_map[real_name])
@@ -125,13 +126,14 @@ class Handle(object):
                             show_str += "\n"
                 else:
                     # 展示结果
+                    show_str = ""
                     for nick_name in nick_names:
                         real_name = nick_to_real_map[nick_name]
                         print real_name
                         print "ahh"
                         print real_to_vote_map[real_name]
                         print "pre"
-                        show_str += nick_name + u" : " + real_name + u" : " + real_to_vote_map[real_name]
+                        show_str += nick_name + u" : " + real_name + u" : " + str(real_to_vote_map[real_name])
                         print show_str
                         if real_names[-1] != real_name:
                             show_str += "\n"
