@@ -2,6 +2,8 @@
 # filename: handle.py
 
 import hashlib
+import threading
+
 import web
 import codecs
 
@@ -11,10 +13,8 @@ import receive
 import sys
 sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
 from secret import nj_token
-from app.player import default_players, Player
 
-# reload(sys)
-# sys.setdefaultencoding('utf8')
+from app.player import default_players, Player
 
 g_listPlayers = default_players()
 
@@ -25,8 +25,8 @@ g_dictOrderToPlayer = dict(zip(g_listOrderNums, g_listPlayers))
 g_stFansNumber = set()
 
 g_listAdmins = ["tomatoes11", "farseerleo",
-          "o_hn0s0hhaGPwHfZ9mWo8RtnWA2A",
-          "o_hn0szZLZ3nhY7m-9b9mSaqWRE0"]
+                "o_hn0s0hhaGPwHfZ9mWo8RtnWA2A",
+                "o_hn0szZLZ3nhY7m-9b9mSaqWRE0"]
 g_stAdminNumber = set(g_listAdmins)
 
 
@@ -34,7 +34,6 @@ class Handle(object):
     def POST(self):
         global g_listPlayers, g_stFansNumber, g_dictOrderToPlayer, g_stAdminNumber
         try:
-            read_data_in_txt()
             webData = web.data()
             print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
@@ -67,7 +66,6 @@ class Handle(object):
                         player = g_dictOrderToPlayer[strOrderNum]
                         # 更新 数据
                         player.strName = strName
-                        save_data()
                     # 增加选手：add [strOrderNum] [strName]
                     elif recMsg.Content.startswith("add"):
                         strShow = u"add\n"
@@ -83,7 +81,6 @@ class Handle(object):
                             newPlayer.intVotes = 0
                             g_listPlayers.append(newPlayer)
                             g_dictOrderToPlayer[strOrderNum] = newPlayer
-                            save_data()
                         else:
                             strShow = u"该号数已经存在"
                     # 删除选手：del [strOrderNum]
@@ -97,7 +94,6 @@ class Handle(object):
                             strName = g_dictOrderToPlayer[strOrderNum]
                             g_listPlayers.remove(strName)
                             del g_dictOrderToPlayer[strOrderNum]
-                            save_data()
                     # 修改票数：votec [order_name] [intVotes]
                     elif recMsg.Content.startswith("votec"):
                         strShow = u"votec\n"
@@ -108,10 +104,11 @@ class Handle(object):
                         # 更新 数据
                         player = g_dictOrderToPlayer[strOrderNum]
                         player.intVotes = intVotes
-                        save_data()
                     # 复位票数和已投票粉丝：
                     elif recMsg.Content.startswith("reset"):
                         init_all_data()
+                    # 立即存储数据
+                    elif recMsg.Content.startswith("saveall"):
                         save_data()
                     # 投票检验
                     else:
@@ -119,8 +116,7 @@ class Handle(object):
                         if strOrderNum in g_listOrderNums:
                             player = g_dictOrderToPlayer[strOrderNum]
                             player.intVotes += 1
-                            strShow = u"已经成功投给%s号选手%s！" % (strOrderNum, player.strName)
-                            save_data()
+                            strShow = u"已经成功投给%s号选手%s！\n" % (strOrderNum, player.strName)
                         else:
                             strShow = u"没有这个号数的选手哦(⊙□⊙)\n"
                 else:
@@ -134,8 +130,7 @@ class Handle(object):
                             g_stFansNumber.add(strToUser)
                             player = g_dictOrderToPlayer[strOrderNum]
                             player.intVotes += 1
-                            strShow = u"已经成功投给%s号选手%s！" % (strOrderNum, player.strName)
-                            save_data()
+                            strShow = u"已经成功投给%s号选手%s！\n" % (strOrderNum, player.strName)
                         else:
                             strShow = u"没有这个号数的选手哦(⊙□⊙)\n"
                 # 展示结果
@@ -147,8 +142,14 @@ class Handle(object):
                 # 格式化最终字符串
                 strContent = strShow.encode('utf-8')
                 replyMsg = reply.TextMsg(strToUser, strFromUser, strContent)
-                #save_data()
+                # save_data()
                 return replyMsg.send()
+            elif isinstance(recMsg, receive.EventMsg):
+                if recMsg.Event == 'CLICK':
+                    if recMsg.Eventkey == 'mpGuide':
+                        content = u"编写中，尚未完成".encode('utf-8')
+                        replyMsg = reply.TextMsg(toUser, fromUser, content)
+                        return replyMsg.send()
             else:
                 print "暂且不处理"
                 return "success"
@@ -157,7 +158,6 @@ class Handle(object):
 
 
 def init_all_data(strOrderNum=None, players=None, dictOrderToPlayer=None):
-
     global g_listOrderNums, g_listPlayers, g_dictOrderToPlayer, g_stFansNumber
 
     if players is None:
@@ -188,7 +188,7 @@ def save_data_in_txt():
     return "save_ok"
 
 
-def read_data_in_txt():
+def read_data():
     with codecs.open('/root/PycharmProjects/GitWeiXinPublic/data.txt', 'r', 'utf-8') as f:
         global g_listPlayers, g_listOrderNums, g_dictOrderToPlayer
         g_listPlayers = []
@@ -206,3 +206,15 @@ def read_data_in_txt():
             g_listOrderNums.append(strOrderNum)
         g_dictOrderToPlayer = dict(zip(g_listOrderNums, g_listPlayers))
     return "read_ok"
+
+
+# 定时器，600 秒存储一次投票数据
+def timer_save():
+    save_data()
+    global g_timer_save
+    g_timer_save = threading.Timer(600, timer_save)
+    g_timer_save.start()
+
+
+g_timer_save = threading.Timer(600, timer_save)
+g_timer_save.start()
