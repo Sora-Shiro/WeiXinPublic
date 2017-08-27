@@ -39,6 +39,9 @@ class Handle(object):
             print "Handle Post webdata is ", webData  # 后台打日志
             recMsg = receive.parse_xml(webData)
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
+                # 默认最后的文本需要编码
+                boolNeedEncode = True
+
                 strShow = u""
                 strToUser = recMsg.FromUserName
                 strFromUser = recMsg.ToUserName
@@ -130,6 +133,7 @@ class Handle(object):
                     # 其他文本交给机器人
                     else:
                         strShow = robot_talk(strUserWord, strFromUser[0:15])
+                        boolNeedEncode = False
                 # 非管理员处理
                 else:
                     # 投票处理
@@ -156,12 +160,16 @@ class Handle(object):
                     # 其他文本交给机器人
                     else:
                         strShow = robot_talk(strUserWord, strFromUser[0:15])
+                        boolNeedEncode = False
                 # 格式化最终字符串
                 print "1"
                 if len(strShow) == 0:
                     return ""
                 print "2"
-                strContent = strShow.encode('utf-8')
+                if boolNeedEncode:
+                    strContent = strShow.encode('utf-8')
+                else:
+                    strContent = strShow
                 print "3"
                 replyMsg = reply.TextMsg(strToUser, strFromUser, strContent)
                 print "4"
