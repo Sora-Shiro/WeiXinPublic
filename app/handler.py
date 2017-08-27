@@ -161,18 +161,16 @@ class Handle(object):
                     else:
                         strShow = robot_talk(strUserWord, strFromUser[0:15])
                         boolNeedEncode = False
-                # 格式化最终字符串
-                print "1"
+                        
                 if len(strShow) == 0:
                     return ""
-                print "2"
+
+                # 格式化最终字符串
                 if boolNeedEncode:
                     strContent = strShow.encode('utf-8')
                 else:
                     strContent = strShow
-                print "3"
                 replyMsg = reply.TextMsg(strToUser, strFromUser, strContent)
-                print "4"
                 # save_data()
                 return replyMsg.send()
             elif isinstance(recMsg, receive.EventMsg):
