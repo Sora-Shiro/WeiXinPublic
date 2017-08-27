@@ -179,7 +179,7 @@ def save_data():
 
 
 def save_data_in_txt():
-    with codecs.open('/root/PycharmProjects/GitWeiXinPublic/intVotes.txt', 'w', 'utf-8') as f:
+    with codecs.open('/root/PycharmProjects/GitWeiXinPublic/data.txt', 'w', 'utf-8') as f:
         line_str = ""
         for strOrderNum in g_listOrderNums:
             player = g_dictOrderToPlayer[strOrderNum]
@@ -189,7 +189,7 @@ def save_data_in_txt():
 
 
 def read_data_in_txt():
-    with codecs.open('/root/PycharmProjects/GitWeiXinPublic/intVotes.txt', 'r', 'utf-8') as f:
+    with codecs.open('/root/PycharmProjects/GitWeiXinPublic/data.txt', 'r', 'utf-8') as f:
         global g_listPlayers, g_listOrderNums, g_dictOrderToPlayer
         g_listPlayers = []
         g_listOrderNums = []
