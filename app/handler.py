@@ -12,12 +12,9 @@ import reply
 import receive
 
 import sys
-
-from app import talk_api
-
 sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
 from secret import nj_token
-
+from app import talk_api
 from app.player import default_players, Player
 
 g_listPlayers = default_players()
