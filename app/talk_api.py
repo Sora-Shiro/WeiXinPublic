@@ -17,6 +17,7 @@ def talk(content, userid):
     r = s.post(url, data=data)
     j = eval(r.text)
     code = j['code']
+    print code
     if code == 100000:
         recontent = j['text']
     elif code == 200000:
@@ -27,4 +28,5 @@ def talk(content, userid):
         recontent = j['text'] + j['list'][0]['info'] + j['list'][0]['detailurl']
     else:
         recontent = '这货还没学会怎么回复这句话'
+    print recontent
     return recontent
