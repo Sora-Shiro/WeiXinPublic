@@ -225,7 +225,7 @@ def save_data_in_txt():
 
 
 def read_data():
-    with codecs.open('/root/PycharmProjects/GitWeiXinPublic/data.txt', 'r', 'utf-8') as f:
+    with codecs.open('/root/WeiXinPublic/data.txt', 'r', 'utf-8') as f:
         global g_listPlayers, g_listOrderNums, g_dictOrderToPlayer
         g_listPlayers = []
         g_listOrderNums = []
