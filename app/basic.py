@@ -11,7 +11,7 @@ import time
 import json
 
 import sys
-sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
+sys.path.append('/root/WeiXinPublic/WeiXinPublic')
 from secret.nj_token import app_id, app_secret
 
 

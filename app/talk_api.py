@@ -5,7 +5,7 @@ import json
 import requests
 import sys
 
-sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
+sys.path.append('/root/WeiXinPublic/WeiXinPublic')
 from secret.nj_token import tuling_api_key
 
 s = requests.session()

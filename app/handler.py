@@ -12,7 +12,7 @@ import reply
 import receive
 
 import sys
-sys.path.append('/root/PycharmProjects/GitWeiXinPublic/WeiXinPublic')
+sys.path.append('/root/WeiXinPublic/WeiXinPublic')
 from secret import nj_token
 from app import talk_api
 from app.player import default_players, Player
@@ -161,7 +161,7 @@ class Handle(object):
                     else:
                         strShow = robot_talk(strUserWord, strFromUser[0:15])
                         boolNeedEncode = False
-                        
+
                 if len(strShow) == 0:
                     return ""
 
