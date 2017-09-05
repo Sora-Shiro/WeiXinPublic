@@ -18,4 +18,4 @@ except re.error:
                        u'[\u2600-\u2B55])+|[\uD800-\uDBFF][\uDC00-\uDFFF]',
                           re.UNICODE)
 
-re_all_num = re.compile('^[0-9]*$')
+re_all_num = re.compile('^[0-9]{1,5}$')

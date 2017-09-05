@@ -14,7 +14,7 @@ import receive
 
 import sys
 
-from app.tools.re_sorashiro import re_all_num
+from tools.re_sorashiro import re_all_num
 
 sys.path.append('/root/WeiXinPublic/WeiXinPublic')
 from secret import nj_token
