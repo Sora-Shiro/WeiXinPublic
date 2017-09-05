@@ -13,6 +13,9 @@ import reply
 import receive
 
 import sys
+
+from app.tools.re_sorashiro import re_all_num
+
 sys.path.append('/root/WeiXinPublic/WeiXinPublic')
 from secret import nj_token
 from app import talk_api
@@ -144,12 +147,14 @@ class Handle(object):
                     elif strUserWord.startswith("saveall"):
                         save_data()
                     # 投票检验
-                    elif strUserWord.startswith("toupiao"):
-                        strOrderNum = strUserWord[7:]
-                        if strOrderNum in g_listOrderNums:
-                            player = g_dictOrderToPlayer[strOrderNum]
+                    # elif strUserWord.startswith("toupiao"):
+                    #     strOrderNum = strUserWord[8:]
+                    #     if strOrderNum in g_listOrderNums:
+                    elif re_all_num.search(strUserWord):
+                        if strUserWord in g_listOrderNums:
+                            player = g_dictOrderToPlayer[strUserWord]
                             player.intVotes += 1
-                            strShow = u"已经成功投给%s号选手%s！\n" % (strOrderNum, player.strName)
+                            strShow = u"已经成功投给%s号选手%s！\n" % (strUserWord, player.strName)
                         else:
                             strShow = u"没有这个号数的选手哦(⊙□⊙)\n"
                         # 展示投票结果
@@ -165,18 +170,17 @@ class Handle(object):
                 # 非管理员处理
                 else:
                     # 投票处理
-                    if strUserWord.startswith("toupiao"):
+                    if re_all_num.search(strUserWord):
                         # 检测该非管理员人员是否已经投票
                         if strToUser in g_stFansNumber:
                             strShow = u"您已经投过票，谢谢参与！(*´▽｀* )\n"
                         # 投票检验
                         else:
-                            strOrderNum = strUserWord[7:]
-                            if strOrderNum in g_listOrderNums:
+                            if strUserWord in g_listOrderNums:
                                 g_stFansNumber.add(strToUser)
-                                player = g_dictOrderToPlayer[strOrderNum]
+                                player = g_dictOrderToPlayer[strUserWord]
                                 player.intVotes += 1
-                                strShow = u"已经成功投给%s号选手%s！\n" % (strOrderNum, player.strName)
+                                strShow = u"已经成功投给%s号选手%s！\n" % (strUserWord, player.strName)
                             else:
                                 strShow = u"没有这个号数的选手哦(⊙□⊙)\n"
                         # 展示投票结果
