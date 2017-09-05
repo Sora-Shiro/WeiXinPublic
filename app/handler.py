@@ -33,6 +33,7 @@ g_stAdminNumber = set(g_listAdmins)
 
 
 class Handle(object):
+    '''
     def GET(self):
         try:
             data = web.input()
@@ -56,6 +57,7 @@ class Handle(object):
                 return ""
         except Exception, Argument:
             return Argument
+    '''
 
 
     def POST(self):

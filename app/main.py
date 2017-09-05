@@ -9,6 +9,8 @@ g_urls = (
 )
 
 if __name__ == '__main__':
+    print "Starting Server"
+
     read_data()
 
     app = web.application(g_urls, globals())
